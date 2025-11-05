@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - AppVault</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="logo">
+                        <i class="fas fa-vault"></i>
+                        <span>AppVault</span>
+                    </div>
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#categories">التصنيفات</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="login.html" class="active">تسجيل الدخول</a></li>
+                    </ul>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchTab('login')">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تسجيل الدخول
+                    </button>
+                    <button class="auth-tab" onclick="switchTab('register')">
+                        <i class="fas fa-user-plus"></i>
+                        إنشاء حساب
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div class="auth-form" id="loginForm">
+                    <div class="form-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h2>مرحباً بعودتك</h2>
+                        <p>سجل الدخول للوصول إلى حسابك</p>
+                    </div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                            <input type="email" id="loginEmail" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> كلمة المرور</label>
+                            <div class="password-input">
+                                <input type="password" id="loginPassword" placeholder="••••••••" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe">
+                                <span>تذكرني</span>
+                            </label>
+                            <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
+                        </div>
+                        <button type="submit" class="btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i>
+                            تسجيل الدخول
+                        </button>
+                    </form>
+                    <div class="auth-divider">
+                        <span>أو سجل الدخول باستخدام</span>
+                    </div>
+                    <div class="social-login">
+                        <button class="social-btn facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook
+                        </button>
+                        <button class="social-btn google">
+                            <i class="fab fa-google"></i>
+                            Google
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div class="auth-form" id="registerForm" style="display: none;">
+                    <div class="form-header">
+                        <i class="fas fa-user-plus"></i>
+                        <h2>إنشاء حساب جديد</h2>
+                        <p>انضم إلينا واستمتع بمميزات حصرية</p>
+                    </div>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> الاسم الكامل</label>
+                            <input type="text" id="registerName" placeholder="أدخل اسمك الكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                            <input type="email" id="registerEmail" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> كلمة المرور</label>
+                            <div class="password-input">
+                                <input type="password" id="registerPassword" placeholder="••••••••" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <small class="hint">يجب أن تحتوي على 8 أحرف على الأقل</small>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> تأكيد كلمة المرور</label>
+                            <div class="password-input">
+                                <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span>أوافق على <a href="#">الشروط والأحكام</a></span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i>
+                            إنشاء حساب
+                        </button>
+                    </form>
+                    <div class="auth-divider">
+                        <span>أو سجل باستخدام</span>
+                    </div>
+                    <div class="social-login">
+                        <button class="social-btn facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook
+                        </button>
+                        <button class="social-btn google">
+                            <i class="fab fa-google"></i>
+                            Google
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="auth-features">
+                <div class="feature-item">
+                    <i class="fas fa-heart"></i>
+                    <h3>المفضلة</h3>
+                    <p>احفظ تطبيقاتك المفضلة للوصول السريع</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-history"></i>
+                    <h3>السجل</h3>
+                    <p>تتبع جميع تحميلاتك السابقة</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bell"></i>
+                    <h3>التنبيهات</h3>
+                    <p>احصل على تنبيهات بالتحديثات الجديدة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-vault"></i>
+                        <span>AppVault</span>
+                    </div>
+                    <p>مركزك الموثوق لتحميل التطبيقات والملفات بأمان وسهولة</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#categories">التصنيفات</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="login.html">تسجيل الدخول</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>الدعم الفني</h3>
+                    <ul>
+                        <li><a href="contact.html">مركز المساعدة</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                        <li><a href="#">شروط الاستخدام</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> info@appvault.com</li>
+                        <li><i class="fas fa-phone"></i> +20 123 456 7890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AppVault. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

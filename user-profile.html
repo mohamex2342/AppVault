@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملفي الشخصي - AppVault</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="logo">
+                        <i class="fas fa-vault"></i>
+                        <span>AppVault</span>
+                    </div>
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#categories">التصنيفات</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="user-profile.html" class="active">حسابي</a></li>
+                        <li><a href="#" onclick="logout()">تسجيل الخروج</a></li>
+                    </ul>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Sidebar -->
+                <div class="profile-sidebar">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3 id="userName">اسم المستخدم</h3>
+                        <p id="userEmail">user@email.com</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <strong id="userDownloads">0</strong>
+                                <span>التحميلات</span>
+                            </div>
+                            <div class="stat">
+                                <strong id="userFavorites">0</strong>
+                                <span>المفضلة</span>
+                            </div>
+                            <div class="stat">
+                                <strong id="userReviews">0</strong>
+                                <span>التقييمات</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-menu">
+                        <button class="menu-item active" onclick="showSection('favorites')">
+                            <i class="fas fa-heart"></i>
+                            المفضلة
+                        </button>
+                        <button class="menu-item" onclick="showSection('downloads')">
+                            <i class="fas fa-download"></i>
+                            سجل التحميلات
+                        </button>
+                        <button class="menu-item" onclick="showSection('reviews')">
+                            <i class="fas fa-star"></i>
+                            تقييماتي
+                        </button>
+                        <button class="menu-item" onclick="showSection('settings')">
+                            <i class="fas fa-cog"></i>
+                            الإعدادات
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="profile-content">
+                    <!-- Favorites Section -->
+                    <div class="content-section" id="favoritesSection">
+                        <div class="section-header">
+                            <h2><i class="fas fa-heart"></i> المفضلة</h2>
+                            <p>التطبيقات والملفات المفضلة لديك</p>
+                        </div>
+                        <div class="apps-grid" id="favoritesGrid">
+                            <!-- Favorites will be loaded dynamically -->
+                        </div>
+                        <div class="empty-state" id="emptyFavorites">
+                            <i class="fas fa-heart-broken"></i>
+                            <h3>لا توجد مفضلة</h3>
+                            <p>لم تقم بإضافة أي تطبيقات إلى المفضلة بعد</p>
+                            <a href="index.html" class="btn-primary">استكشف التطبيقات</a>
+                        </div>
+                    </div>
+
+                    <!-- Downloads Section -->
+                    <div class="content-section" id="downloadsSection" style="display: none;">
+                        <div class="section-header">
+                            <h2><i class="fas fa-download"></i> سجل التحميلات</h2>
+                            <p>جميع التطبيقات والملفات التي قمت بتحميلها</p>
+                        </div>
+                        <div class="downloads-list" id="downloadsList">
+                            <!-- Downloads will be loaded dynamically -->
+                        </div>
+                        <div class="empty-state" id="emptyDownloads">
+                            <i class="fas fa-download"></i>
+                            <h3>لا توجد تحميلات</h3>
+                            <p>لم تقم بتحميل أي تطبيقات بعد</p>
+                            <a href="index.html" class="btn-primary">تصفح التطبيقات</a>
+                        </div>
+                    </div>
+
+                    <!-- Reviews Section -->
+                    <div class="content-section" id="reviewsSection" style="display: none;">
+                        <div class="section-header">
+                            <h2><i class="fas fa-star"></i> تقييماتي</h2>
+                            <p>التقييمات والمراجعات التي كتبتها</p>
+                        </div>
+                        <div class="user-reviews-list" id="userReviewsList">
+                            <!-- Reviews will be loaded dynamically -->
+                        </div>
+                        <div class="empty-state" id="emptyReviews">
+                            <i class="fas fa-star-half-alt"></i>
+                            <h3>لا توجد تقييمات</h3>
+                            <p>لم تقم بكتابة أي تقييمات بعد</p>
+                            <a href="index.html" class="btn-primary">قيّم التطبيقات</a>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div class="content-section" id="settingsSection" style="display: none;">
+                        <div class="section-header">
+                            <h2><i class="fas fa-cog"></i> الإعدادات</h2>
+                            <p>إدارة معلومات حسابك وتفضيلاتك</p>
+                        </div>
+                        <div class="settings-form">
+                            <form onsubmit="updateProfile(event)">
+                                <div class="settings-group">
+                                    <h3><i class="fas fa-user"></i> المعلومات الشخصية</h3>
+                                    <div class="form-group">
+                                        <label>الاسم الكامل</label>
+                                        <input type="text" id="settingsName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>البريد الإلكتروني</label>
+                                        <input type="email" id="settingsEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>رقم الهاتف (اختياري)</label>
+                                        <input type="tel" id="settingsPhone">
+                                    </div>
+                                </div>
+
+                                <div class="settings-group">
+                                    <h3><i class="fas fa-lock"></i> تغيير كلمة المرور</h3>
+                                    <div class="form-group">
+                                        <label>كلمة المرور الحالية</label>
+                                        <input type="password" id="currentPassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>كلمة المرور الجديدة</label>
+                                        <input type="password" id="newPassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>تأكيد كلمة المرور الجديدة</label>
+                                        <input type="password" id="confirmNewPassword">
+                                    </div>
+                                </div>
+
+                                <div class="settings-group">
+                                    <h3><i class="fas fa-bell"></i> الإشعارات</h3>
+                                    <label class="switch-label">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span>إشعارات البريد الإلكتروني</span>
+                                    </label>
+                                    <label class="switch-label">
+                                        <input type="checkbox" id="updateNotifications" checked>
+                                        <span>إشعارات التحديثات</span>
+                                    </label>
+                                    <label class="switch-label">
+                                        <input type="checkbox" id="newsNotifications">
+                                        <span>النشرة الإخبارية</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    حفظ التغييرات
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-vault"></i>
+                        <span>AppVault</span>
+                    </div>
+                    <p>مركزك الموثوق لتحميل التطبيقات والملفات بأمان وسهولة</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#categories">التصنيفات</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="login.html">تسجيل الدخول</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>الدعم الفني</h3>
+                    <ul>
+                        <li><a href="contact.html">مركز المساعدة</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                        <li><a href="#">شروط الاستخدام</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> info@appvault.com</li>
+                        <li><i class="fas fa-phone"></i> +20 123 456 7890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AppVault. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/user-profile.js"></script>
+</body>
+</html>

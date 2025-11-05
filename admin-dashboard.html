@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - AppVault Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <i class="fas fa-vault"></i>
+                <span>AppVault Admin</span>
+            </div>
+            <button class="sidebar-toggle" onclick="toggleAdminSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="admin-menu">
+            <a href="#" class="admin-menu-item active" onclick="showAdminSection('dashboard')">
+                <i class="fas fa-chart-line"></i>
+                <span>لوحة المعلومات</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('apps')">
+                <i class="fas fa-mobile-alt"></i>
+                <span>إدارة التطبيقات</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('add-app')">
+                <i class="fas fa-plus-circle"></i>
+                <span>إضافة تطبيق جديد</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('reviews')">
+                <i class="fas fa-star"></i>
+                <span>إدارة التقييمات</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('users')">
+                <i class="fas fa-users"></i>
+                <span>المستخدمون</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('messages')">
+                <i class="fas fa-envelope"></i>
+                <span>الرسائل</span>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="showAdminSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>الإعدادات</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <a href="index.html" class="admin-menu-item">
+                <i class="fas fa-home"></i>
+                <span>الموقع الرئيسي</span>
+            </a>
+            <a href="#" class="admin-menu-item" onclick="adminLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Admin Main Content -->
+    <main class="admin-main">
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="mobile-sidebar-toggle" onclick="toggleAdminSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="adminPageTitle">لوحة المعلومات</h1>
+            </div>
+            <div class="admin-header-right">
+                <div class="admin-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="بحث...">
+                </div>
+                <button class="admin-notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">5</span>
+                </button>
+                <div class="admin-user">
+                    <i class="fas fa-user-shield"></i>
+                    <span>المسؤول</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="admin-section active" id="dashboardSection">
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalAppsCount">0</h3>
+                        <p>إجمالي التطبيقات</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 12%
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalDownloadsCount">50,284</h3>
+                        <p>إجمالي التحميلات</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 8%
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsersCount">10,532</h3>
+                        <p>المستخدمون</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 15%
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="avgRatingCount">4.5</h3>
+                        <p>متوسط التقييم</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 5%
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-charts-grid">
+                <div class="admin-chart-card">
+                    <h3><i class="fas fa-chart-line"></i> إحصائيات التحميل</h3>
+                    <canvas id="downloadsChart" style="height: 300px;"></canvas>
+                </div>
+                <div class="admin-chart-card">
+                    <h3><i class="fas fa-chart-pie"></i> التطبيقات حسب التصنيف</h3>
+                    <canvas id="categoriesChart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+
+            <div class="admin-recent-section">
+                <h3><i class="fas fa-clock"></i> النشاط الأخير</h3>
+                <div class="activity-list" id="activityList">
+                    <!-- Activity items will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Apps Management Section -->
+        <section class="admin-section" id="appsSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-mobile-alt"></i> إدارة التطبيقات</h2>
+                <div class="admin-section-actions">
+                    <input type="text" id="appsSearchInput" placeholder="بحث في التطبيقات..." onkeyup="filterAppsTable()">
+                    <select id="categoryFilter" onchange="filterAppsTable()">
+                        <option value="">جميع التصنيفات</option>
+                        <option value="mobile">تطبيقات الهاتف</option>
+                        <option value="computer">برامج الكمبيوتر</option>
+                        <option value="educational">أدوات تعليمية</option>
+                        <option value="pdf">ملفات PDF</option>
+                        <option value="games">ألعاب</option>
+                    </select>
+                </div>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>الاسم</th>
+                            <th>التصنيف</th>
+                            <th>التقييم</th>
+                            <th>التحميلات</th>
+                            <th>التاريخ</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appsTableBody">
+                        <!-- Apps will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Add App Section -->
+        <section class="admin-section" id="addAppSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-plus-circle"></i> إضافة تطبيق جديد</h2>
+            </div>
+            <form onsubmit="handleAddApp(event)" class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم التطبيق *</label>
+                        <input type="text" id="appName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>التصنيف *</label>
+                        <select id="appCategory" required>
+                            <option value="">اختر التصنيف</option>
+                            <option value="mobile">تطبيقات الهاتف</option>
+                            <option value="computer">برامج الكمبيوتر</option>
+                            <option value="educational">أدوات تعليمية</option>
+                            <option value="pdf">ملفات PDF</option>
+                            <option value="games">ألعاب</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الحجم *</label>
+                        <input type="text" id="appSize" placeholder="مثال: 25 MB" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الإصدار *</label>
+                        <input type="text" id="appVersion" placeholder="مثال: 1.0.0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>المنصات المدعومة *</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="platform" value="windows">
+                            <span>Windows</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="platform" value="android">
+                            <span>Android</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="platform" value="ios">
+                            <span>iOS</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="platform" value="mac">
+                            <span>Mac</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="platform" value="linux">
+                            <span>Linux</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف *</label>
+                    <textarea id="appDescription" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>المميزات (سطر واحد لكل ميزة)</label>
+                    <textarea id="appFeatures" rows="5" placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رابط الصورة المميزة *</label>
+                        <input type="url" id="appIcon" placeholder="https://example.com/image.png" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط التحميل *</label>
+                        <input type="url" id="appDownloadUrl" placeholder="https://example.com/download" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ التطبيق
+                    </button>
+                    <button type="reset" class="btn-secondary">
+                        <i class="fas fa-redo"></i>
+                        إعادة تعيين
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Reviews Management Section -->
+        <section class="admin-section" id="reviewsSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-star"></i> إدارة التقييمات</h2>
+                <input type="text" id="reviewsSearchInput" placeholder="بحث في التقييمات..." onkeyup="filterReviewsTable()">
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>المستخدم</th>
+                            <th>التطبيق</th>
+                            <th>التقييم</th>
+                            <th>التعليق</th>
+                            <th>التاريخ</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTableBody">
+                        <!-- Reviews will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Users Management Section -->
+        <section class="admin-section" id="usersSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+                <input type="text" id="usersSearchInput" placeholder="بحث في المستخدمين..." onkeyup="filterUsersTable()">
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>التحميلات</th>
+                            <th>التقييمات</th>
+                            <th>تاريخ الانضمام</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Messages Section -->
+        <section class="admin-section" id="messagesSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-envelope"></i> الرسائل</h2>
+                <select id="messageFilter" onchange="filterMessages()">
+                    <option value="all">جميع الرسائل</option>
+                    <option value="unread">غير مقروءة</option>
+                    <option value="read">مقروءة</option>
+                </select>
+            </div>
+            <div class="messages-list" id="messagesList">
+                <!-- Messages will be loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="admin-section" id="settingsSection">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-cog"></i> إعدادات الموقع</h2>
+            </div>
+            <form onsubmit="handleSiteSettings(event)" class="admin-form">
+                <div class="settings-group">
+                    <h3>الإعدادات العامة</h3>
+                    <div class="form-group">
+                        <label>اسم الموقع</label>
+                        <input type="text" id="siteName" value="AppVault">
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" id="siteEmail" value="info@appvault.com">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" id="sitePhone" value="+20 123 456 7890">
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>إعدادات التحميل</h3>
+                    <label class="switch-label">
+                        <input type="checkbox" id="allowDownloads" checked>
+                        <span>السماح بالتحميل للضيوف</span>
+                    </label>
+                    <label class="switch-label">
+                        <input type="checkbox" id="requireLogin" checked>
+                        <span>طلب تسجيل الدخول للتقييم</span>
+                    </label>
+                    <label class="switch-label">
+                        <input type="checkbox" id="enableComments" checked>
+                        <span>تفعيل التعليقات</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ الإعدادات
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Edit App Modal -->
+    <div class="modal" id="editAppModal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-edit"></i>
+                <h2>تعديل التطبيق</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="handleEditApp(event)" id="editAppForm">
+                    <input type="hidden" id="editAppId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم التطبيق</label>
+                            <input type="text" id="editAppName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>التصنيف</label>
+                            <select id="editAppCategory" required>
+                                <option value="mobile">تطبيقات الهاتف</option>
+                                <option value="computer">برامج الكمبيوتر</option>
+                                <option value="educational">أدوات تعليمية</option>
+                                <option value="pdf">ملفات PDF</option>
+                                <option value="games">ألعاب</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="editAppDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i>
+                            حفظ التغييرات
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="closeEditModal()">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
