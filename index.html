@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الدردشة - Chat App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- صفحة تسجيل الدخول والتسجيل -->
+    <div id="auth-page" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <i class="fas fa-comments"></i>
+                <h1>تطبيق الدردشة</h1>
+                <p>تواصل مع أصدقائك في الوقت الفعلي</p>
+            </div>
+
+            <!-- نموذج تسجيل الدخول -->
+            <div id="login-form" class="auth-form">
+                <h2>تسجيل الدخول</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-envelope"></i>
+                            البريد الإلكتروني
+                        </label>
+                        <input type="email" id="login-email" required placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-lock"></i>
+                            كلمة المرور
+                        </label>
+                        <input type="password" id="login-password" required placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تسجيل الدخول
+                    </button>
+                </form>
+                <p class="switch-auth">
+                    ليس لديك حساب؟ 
+                    <a href="#" onclick="switchToSignup()">إنشاء حساب جديد</a>
+                </p>
+            </div>
+
+            <!-- نموذج التسجيل -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2>إنشاء حساب جديد</h2>
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-user"></i>
+                            الاسم
+                        </label>
+                        <input type="text" id="signup-name" required placeholder="أدخل اسمك الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-envelope"></i>
+                            البريد الإلكتروني
+                        </label>
+                        <input type="email" id="signup-email" required placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-lock"></i>
+                            كلمة المرور
+                        </label>
+                        <input type="password" id="signup-password" required placeholder="أدخل كلمة المرور (6 أحرف على الأقل)" minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        إنشاء حساب
+                    </button>
+                </form>
+                <p class="switch-auth">
+                    لديك حساب بالفعل؟ 
+                    <a href="#" onclick="switchToLogin()">تسجيل الدخول</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة الدردشة الرئيسية -->
+    <div id="chat-page" class="chat-container" style="display: none;">
+        <!-- الشريط العلوي -->
+        <header class="chat-header">
+            <div class="header-left">
+                <i class="fas fa-comments"></i>
+                <h1>تطبيق الدردشة</h1>
+            </div>
+            <div class="header-right">
+                <span id="user-name" class="user-info"></span>
+                <button onclick="handleLogout()" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </header>
+
+        <div class="chat-main">
+            <!-- القائمة الجانبية للمحادثات -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>المحادثات</h3>
+                    <button onclick="showNewChatModal()" class="btn btn-new-chat">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-users" placeholder="البحث عن محادثة..." oninput="searchUsers(this.value)">
+                </div>
+                <div id="users-list" class="users-list">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </aside>
+
+            <!-- منطقة الدردشة -->
+            <main class="chat-area">
+                <div id="welcome-screen" class="welcome-screen">
+                    <i class="fas fa-comments"></i>
+                    <h2>مرحباً بك في تطبيق الدردشة</h2>
+                    <p>اختر محادثة من القائمة الجانبية أو ابدأ محادثة جديدة</p>
+                </div>
+
+                <div id="chat-screen" class="chat-screen" style="display: none;">
+                    <div class="chat-screen-header">
+                        <div class="chat-user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h3 id="current-chat-user"></h3>
+                                <span class="status online">متصل</span>
+                            </div>
+                        </div>
+                        <button onclick="closeChatScreen()" class="btn-close-chat">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div id="messages-container" class="messages-container">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+
+                    <div class="message-input-area">
+                        <form onsubmit="sendMessage(event)" class="message-form">
+                            <input type="text" id="message-input" placeholder="اكتب رسالتك هنا..." required>
+                            <button type="submit" class="btn btn-send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- مودال محادثة جديدة -->
+    <div id="new-chat-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>بدء محادثة جديدة</h3>
+                <button onclick="closeNewChatModal()" class="btn-close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-all-users" placeholder="البحث عن مستخدمين..." oninput="searchAllUsers(this.value)">
+                </div>
+                <div id="all-users-list" class="all-users-list">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل التنبيه -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- تضمين Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
