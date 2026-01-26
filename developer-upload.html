@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رفع تطبيق جديد - متجر التطبيقات</title>
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-mobile-alt me-2 fs-4"></i>
+                <span class="fw-bold">متجر التطبيقات</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="developer-dashboard.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>
+                            لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="developer-upload.html">
+                            <i class="fas fa-upload me-1"></i>
+                            رفع تطبيق
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="developer-apps.html">
+                            <i class="fas fa-tasks me-1"></i>
+                            إدارة التطبيقات
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2" id="authButtons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Upload Form -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="upload-card">
+                    <div class="text-center mb-5">
+                        <i class="fas fa-cloud-upload-alt text-primary" style="font-size: 4rem;"></i>
+                        <h2 class="fw-bold mt-3" id="pageTitle">رفع تطبيق جديد</h2>
+                        <p class="text-muted">املأ البيانات التالية لنشر تطبيقك</p>
+                    </div>
+
+                    <form id="uploadAppForm">
+                        <!-- Basic Info Section -->
+                        <div class="mb-5">
+                            <h4 class="mb-4">
+                                <i class="fas fa-info-circle text-primary me-2"></i>
+                                المعلومات الأساسية
+                            </h4>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label for="appName" class="form-label">اسم التطبيق *</label>
+                                    <input type="text" class="form-control form-control-lg" id="appName" required placeholder="أدخل اسم التطبيق">
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="appVersion" class="form-label">رقم الإصدار *</label>
+                                    <input type="text" class="form-control form-control-lg" id="appVersion" required placeholder="1.0.0">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="appCategory" class="form-label">الفئة *</label>
+                                    <select class="form-select form-select-lg" id="appCategory" required>
+                                        <option value="">اختر الفئة</option>
+                                        <option value="ألعاب">ألعاب</option>
+                                        <option value="تعليم">تعليم</option>
+                                        <option value="أعمال">أعمال</option>
+                                        <option value="إنتاجية">إنتاجية</option>
+                                        <option value="صحة">صحة</option>
+                                        <option value="ترفيه">ترفيه</option>
+                                        <option value="تواصل اجتماعي">تواصل اجتماعي</option>
+                                        <option value="أدوات">أدوات</option>
+                                        <option value="تصوير">تصوير</option>
+                                        <option value="موسيقى">موسيقى</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="appPlatform" class="form-label">المنصة *</label>
+                                    <select class="form-select form-select-lg" id="appPlatform" required>
+                                        <option value="Android">Android</option>
+                                        <option value="iOS">iOS</option>
+                                        <option value="Both">كلاهما</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="appDescription" class="form-label">وصف التطبيق *</label>
+                                    <textarea class="form-control" id="appDescription" rows="5" required placeholder="اكتب وصفاً تفصيلياً لتطبيقك..."></textarea>
+                                    <small class="text-muted">يرجى كتابة وصف شامل يوضح مميزات التطبيق ووظائفه</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Files Upload Section -->
+                        <div class="mb-5">
+                            <h4 class="mb-4">
+                                <i class="fas fa-file-upload text-primary me-2"></i>
+                                رفع الملفات
+                            </h4>
+                            
+                            <!-- App File Upload -->
+                            <div class="mb-4">
+                                <label class="form-label">ملف التطبيق (APK/IPA) *</label>
+                                <div class="file-upload-area" id="appFileDropZone">
+                                    <div class="icon">
+                                        <i class="fas fa-file-archive"></i>
+                                    </div>
+                                    <h5>اسحب وأفلت ملف التطبيق هنا</h5>
+                                    <p class="text-muted mb-3">أو انقر للاختيار من جهازك</p>
+                                    <input type="file" id="appFileInput" accept=".apk,.ipa" hidden>
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('appFileInput').click()">
+                                        <i class="fas fa-folder-open me-2"></i>
+                                        اختيار ملف
+                                    </button>
+                                    <small class="text-muted d-block mt-2">الحد الأقصى للحجم: 100 ميجابايت</small>
+                                </div>
+                                <div id="appFilePreview" class="file-preview" style="display: none;"></div>
+                                <div class="progress-custom mt-3" id="appFileProgress" style="display: none;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+
+                            <!-- Icon Upload -->
+                            <div class="mb-4">
+                                <label class="form-label">أيقونة التطبيق *</label>
+                                <div class="file-upload-area" id="iconDropZone">
+                                    <div class="icon">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <h5>اسحب وأفلت أيقونة التطبيق هنا</h5>
+                                    <p class="text-muted mb-3">PNG, JPG (512x512 px مُوصى به)</p>
+                                    <input type="file" id="iconInput" accept="image/*" hidden>
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('iconInput').click()">
+                                        <i class="fas fa-folder-open me-2"></i>
+                                        اختيار صورة
+                                    </button>
+                                </div>
+                                <div id="iconPreview" class="file-preview" style="display: none;"></div>
+                            </div>
+
+                            <!-- Screenshots Upload -->
+                            <div class="mb-4">
+                                <label class="form-label">لقطات الشاشة (اختياري)</label>
+                                <div class="file-upload-area" id="screenshotsDropZone">
+                                    <div class="icon">
+                                        <i class="fas fa-images"></i>
+                                    </div>
+                                    <h5>اسحب وأفلت لقطات الشاشة هنا</h5>
+                                    <p class="text-muted mb-3">يمكنك رفع حتى 5 صور</p>
+                                    <input type="file" id="screenshotsInput" accept="image/*" multiple hidden>
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('screenshotsInput').click()">
+                                        <i class="fas fa-folder-open me-2"></i>
+                                        اختيار صور
+                                    </button>
+                                </div>
+                                <div id="screenshotsPreview" class="file-preview" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Settings -->
+                        <div class="mb-5">
+                            <h4 class="mb-4">
+                                <i class="fas fa-cog text-primary me-2"></i>
+                                إعدادات إضافية
+                            </h4>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="appPrice" class="form-label">السعر (اتركه فارغاً للتطبيقات المجانية)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="appPrice" min="0" step="0.01" placeholder="0.00">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="appWebsite" class="form-label">موقع الويب (اختياري)</label>
+                                    <input type="url" class="form-control" id="appWebsite" placeholder="https://example.com">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="publishNow" checked>
+                                        <label class="form-check-label" for="publishNow">
+                                            نشر التطبيق فوراً بعد الرفع
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-3 justify-content-end">
+                            <a href="developer-dashboard.html" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>
+                                إلغاء
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>
+                                <span id="submitBtnText">رفع التطبيق</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 متجر التطبيقات. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/developer-upload.js"></script>
+</body>
+</html>

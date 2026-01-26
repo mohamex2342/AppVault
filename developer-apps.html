@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة التطبيقات - متجر التطبيقات</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-mobile-alt me-2 fs-4"></i>
+                <span class="fw-bold">متجر التطبيقات</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="developer-dashboard.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>
+                            لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="developer-upload.html">
+                            <i class="fas fa-upload me-1"></i>
+                            رفع تطبيق
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="developer-apps.html">
+                            <i class="fas fa-tasks me-1"></i>
+                            إدارة التطبيقات
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2" id="authButtons"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="upload-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-2">
+                        <i class="fas fa-tasks text-primary me-2"></i>
+                        إدارة التطبيقات
+                    </h2>
+                    <p class="text-muted mb-0">عرض وتعديل وحذف تطبيقاتك</p>
+                </div>
+                <a href="developer-upload.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    إضافة تطبيق جديد
+                </a>
+            </div>
+
+            <!-- Filters -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="searchApps" placeholder="بحث عن تطبيق...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="filterCategory">
+                        <option value="">جميع الفئات</option>
+                        <option value="ألعاب">ألعاب</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="أعمال">أعمال</option>
+                        <option value="إنتاجية">إنتاجية</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="filterStatus">
+                        <option value="">جميع الحالات</option>
+                        <option value="published">منشور</option>
+                        <option value="draft">مسودة</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-secondary w-100" onclick="appsManager.loadApps()">
+                        <i class="fas fa-sync me-1"></i>
+                        تحديث
+                    </button>
+                </div>
+            </div>
+
+            <!-- Apps Table -->
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>الأيقونة</th>
+                            <th>اسم التطبيق</th>
+                            <th>الفئة</th>
+                            <th>الإصدار</th>
+                            <th>التحميلات</th>
+                            <th>التقييم</th>
+                            <th>الحالة</th>
+                            <th>تاريخ النشر</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appsTableBody">
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 متجر التطبيقات. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    
+    <script>
+        class AppsManager {
+            constructor() {
+                this.apps = [];
+                this.init();
+            }
+
+            async init() {
+                if (!authManager.requireDeveloper()) return;
+                await this.loadApps();
+                this.setupFilters();
+            }
+
+            async loadApps() {
+                try {
+                    const { data, error } = await supabase
+                        .from(TABLES.apps)
+                        .select('*')
+                        .eq('developer_id', authManager.currentUser.id)
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+                    this.apps = data || [];
+                    this.renderApps(this.apps);
+                } catch (error) {
+                    console.error('Error loading apps:', error);
+                    Utils.showToast('حدث خطأ أثناء تحميل التطبيقات', 'error');
+                }
+            }
+
+            renderApps(apps) {
+                const tbody = document.getElementById('appsTableBody');
+                
+                if (apps.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-3">لا توجد تطبيقات بعد</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = apps.map(app => `
+                    <tr>
+                        <td>
+                            <img src="${app.icon_url || 'https://via.placeholder.com/50'}" 
+                                 alt="${app.name}" 
+                                 width="50" height="50" class="rounded">
+                        </td>
+                        <td><strong>${app.name}</strong></td>
+                        <td><span class="badge bg-primary">${app.category || 'عام'}</span></td>
+                        <td>${app.version || '1.0'}</td>
+                        <td><i class="fas fa-download text-success me-1"></i>${Utils.formatDownloads(app.downloads_count || 0)}</td>
+                        <td><i class="fas fa-star text-warning me-1"></i>${app.rating || 0}</td>
+                        <td>${app.published ? '<span class="badge bg-success">منشور</span>' : '<span class="badge bg-warning">مسودة</span>'}</td>
+                        <td>${Utils.formatDate(app.created_at)}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="app-details.html?id=${app.id}" class="btn btn-outline-primary" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="developer-upload.html?edit=${app.id}" class="btn btn-outline-info" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-outline-danger" onclick="appsManager.deleteApp('${app.id}', '${app.name}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            setupFilters() {
+                const searchInput = document.getElementById('searchApps');
+                const categoryFilter = document.getElementById('filterCategory');
+                const statusFilter = document.getElementById('filterStatus');
+
+                const applyFilters = () => {
+                    let filtered = [...this.apps];
+                    
+                    const searchTerm = searchInput.value.toLowerCase();
+                    if (searchTerm) {
+                        filtered = filtered.filter(app => 
+                            app.name.toLowerCase().includes(searchTerm)
+                        );
+                    }
+                    
+                    const category = categoryFilter.value;
+                    if (category) {
+                        filtered = filtered.filter(app => app.category === category);
+                    }
+                    
+                    const status = statusFilter.value;
+                    if (status === 'published') {
+                        filtered = filtered.filter(app => app.published);
+                    } else if (status === 'draft') {
+                        filtered = filtered.filter(app => !app.published);
+                    }
+                    
+                    this.renderApps(filtered);
+                };
+
+                searchInput.addEventListener('input', applyFilters);
+                categoryFilter.addEventListener('change', applyFilters);
+                statusFilter.addEventListener('change', applyFilters);
+            }
+
+            async deleteApp(appId, appName) {
+                if (!confirm(`هل أنت متأكد من حذف "${appName}"؟`)) return;
+
+                try {
+                    Utils.showLoading(true);
+                    const { error } = await supabase
+                        .from(TABLES.apps)
+                        .delete()
+                        .eq('id', appId);
+
+                    if (error) throw error;
+                    Utils.showToast('تم حذف التطبيق بنجاح', 'success');
+                    await this.loadApps();
+                } catch (error) {
+                    console.error('Error deleting app:', error);
+                    Utils.showToast('حدث خطأ أثناء حذف التطبيق', 'error');
+                } finally {
+                    Utils.showLoading(false);
+                }
+            }
+        }
+
+        let appsManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            appsManager = new AppsManager();
+        });
+    </script>
+</body>
+</html>

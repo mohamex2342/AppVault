@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - متجر التطبيقات</title>
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="auth-card">
+                        <!-- Auth Header -->
+                        <div class="auth-header">
+                            <div class="icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h2 class="fw-bold mb-2" id="authTitle">تسجيل الدخول</h2>
+                            <p class="text-muted" id="authSubtitle">أدخل بياناتك للوصول إلى حسابك</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    البريد الإلكتروني
+                                </label>
+                                <input type="email" class="form-control form-control-lg" id="loginEmail" required placeholder="example@email.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>
+                                    كلمة المرور
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-lg" id="loginPassword" required placeholder="••••••••">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">تذكرني</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                تسجيل الدخول
+                            </button>
+                            <div class="text-center">
+                                <a href="#" class="text-decoration-none" id="forgotPasswordLink">نسيت كلمة المرور؟</a>
+                            </div>
+                        </form>
+
+                        <!-- Register Form -->
+                        <form id="registerForm" style="display: none;">
+                            <div class="mb-3">
+                                <label for="registerName" class="form-label">
+                                    <i class="fas fa-user me-1"></i>
+                                    الاسم الكامل
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="registerName" required placeholder="أدخل اسمك الكامل">
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerEmail" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    البريد الإلكتروني
+                                </label>
+                                <input type="email" class="form-control form-control-lg" id="registerEmail" required placeholder="example@email.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerPassword" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>
+                                    كلمة المرور
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-lg" id="registerPassword" required placeholder="••••••••">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">يجب أن تكون كلمة المرور 8 أحرف على الأقل</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerConfirmPassword" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>
+                                    تأكيد كلمة المرور
+                                </label>
+                                <input type="password" class="form-control form-control-lg" id="registerConfirmPassword" required placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label for="userRole" class="form-label">
+                                    <i class="fas fa-user-tag me-1"></i>
+                                    نوع الحساب
+                                </label>
+                                <select class="form-select form-select-lg" id="userRole" required>
+                                    <option value="user">مستخدم عادي</option>
+                                    <option value="developer">مطور تطبيقات</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    أوافق على <a href="#" class="text-decoration-none">الشروط والأحكام</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                <i class="fas fa-user-plus me-2"></i>
+                                إنشاء حساب جديد
+                            </button>
+                        </form>
+
+                        <!-- Toggle between Login and Register -->
+                        <hr class="my-4">
+                        <div class="text-center">
+                            <p class="mb-0" id="toggleText">
+                                ليس لديك حساب؟ 
+                                <a href="#" class="text-decoration-none fw-bold" id="toggleAuthMode">إنشاء حساب جديد</a>
+                            </p>
+                        </div>
+
+                        <!-- Social Login -->
+                        <div class="text-center mt-4">
+                            <p class="text-muted mb-3">أو سجل الدخول باستخدام</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <button class="btn btn-outline-primary" type="button">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button class="btn btn-outline-primary" type="button">
+                                    <i class="fab fa-facebook"></i>
+                                </button>
+                                <button class="btn btn-outline-primary" type="button">
+                                    <i class="fab fa-github"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Back to Home -->
+                        <div class="text-center mt-4">
+                            <a href="index.html" class="text-decoration-none">
+                                <i class="fas fa-arrow-right me-1"></i>
+                                العودة إلى الصفحة الرئيسية
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    
+    <script>
+        // إدارة صفحة المصادقة
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const toggleAuthMode = document.getElementById('toggleAuthMode');
+            const toggleText = document.getElementById('toggleText');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+
+            let isLoginMode = true;
+
+            // التحقق من معامل URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('register') === 'true') {
+                isLoginMode = false;
+                showRegisterForm();
+            }
+
+            // إظهار/إخفاء كلمة المرور
+            document.getElementById('toggleLoginPassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('loginPassword');
+                const icon = this.querySelector('i');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+
+            document.getElementById('toggleRegisterPassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('registerPassword');
+                const icon = this.querySelector('i');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+
+            // التبديل بين تسجيل الدخول والتسجيل
+            toggleAuthMode.addEventListener('click', (e) => {
+                e.preventDefault();
+                isLoginMode = !isLoginMode;
+                
+                if (isLoginMode) {
+                    showLoginForm();
+                } else {
+                    showRegisterForm();
+                }
+            });
+
+            function showLoginForm() {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                authTitle.textContent = 'تسجيل الدخول';
+                authSubtitle.textContent = 'أدخل بياناتك للوصول إلى حسابك';
+                toggleText.innerHTML = 'ليس لديك حساب؟ <a href="#" class="text-decoration-none fw-bold" id="toggleAuthMode">إنشاء حساب جديد</a>';
+                document.getElementById('toggleAuthMode').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginMode = false;
+                    showRegisterForm();
+                });
+            }
+
+            function showRegisterForm() {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                authTitle.textContent = 'إنشاء حساب جديد';
+                authSubtitle.textContent = 'انضم إلينا وابدأ في استكشاف التطبيقات';
+                toggleText.innerHTML = 'لديك حساب بالفعل؟ <a href="#" class="text-decoration-none fw-bold" id="toggleAuthMode">تسجيل الدخول</a>';
+                document.getElementById('toggleAuthMode').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginMode = true;
+                    showLoginForm();
+                });
+            }
+
+            // معالجة تسجيل الدخول
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                const result = await authManager.signIn(email, password);
+                
+                if (result.success) {
+                    // إعادة التوجيه بناءً على نوع المستخدم
+                    if (authManager.isDeveloper() || authManager.isAdmin()) {
+                        setTimeout(() => {
+                            window.location.href = 'developer-dashboard.html';
+                        }, 1500);
+                    } else {
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    }
+                }
+            });
+
+            // معالجة التسجيل
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                const role = document.getElementById('userRole').value;
+
+                // التحقق من تطابق كلمة المرور
+                if (password !== confirmPassword) {
+                    Utils.showToast('كلمة المرور غير متطابقة', 'error');
+                    return;
+                }
+
+                // التحقق من طول كلمة المرور
+                if (password.length < 8) {
+                    Utils.showToast('يجب أن تكون كلمة المرور 8 أحرف على الأقل', 'error');
+                    return;
+                }
+
+                const result = await authManager.signUp(email, password, name, role);
+                
+                if (result.success) {
+                    setTimeout(() => {
+                        showLoginForm();
+                        document.getElementById('loginEmail').value = email;
+                    }, 2000);
+                }
+            });
+
+            // نسيت كلمة المرور
+            document.getElementById('forgotPasswordLink')?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                
+                if (!email) {
+                    Utils.showToast('يرجى إدخال البريد الإلكتروني أولاً', 'warning');
+                    return;
+                }
+
+                const result = await authManager.resetPassword(email);
+            });
+        });
+    </script>
+</body>
+</html>
